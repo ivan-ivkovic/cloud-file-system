@@ -34,4 +34,17 @@ public class FilesController : ControllerBase
 
         return Ok(file);
     }
+
+    [HttpPost()]
+    public IActionResult Create(CreateOrUpdateFileModel model)
+    {
+        try
+        {
+            return Ok(this.fileService.CreateFile(model));
+        }
+        catch (FileRepositoryException)
+        {
+            return BadRequest();
+        }
+    }
 }

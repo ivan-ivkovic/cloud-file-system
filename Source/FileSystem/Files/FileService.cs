@@ -33,4 +33,14 @@ public class FileService
 
         return files;
     }
+
+    public FileModel CreateFile(CreateOrUpdateFileModel file)
+    {
+        if (this.fileRepository.FileExists(file.Name))
+        {
+            throw new FileRepositoryException("File already exists.");
+        }
+
+        return this.fileRepository.CreateFile(file);
+    }
 }
