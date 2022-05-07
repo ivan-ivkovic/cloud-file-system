@@ -1,8 +1,8 @@
 using System;
 
-namespace P3Mobility.CloudFileSystem.FileSystemApi;
+namespace P3Mobility.CloudFileSystem.FileSystem.Files;
 
-internal class FileModel
+public class FileModel
 {
     public Guid Id { get; set; }
 
