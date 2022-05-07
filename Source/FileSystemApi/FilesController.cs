@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,31 +10,24 @@ namespace P3Mobility.CloudFileSystem.FileSystemApi;
 [Route("[controller]")]
 public class FilesController : ControllerBase
 {
-    private List<FileModel> files = new List<FileModel>()
+    private readonly FileService fileService;
+
+    public FilesController(FileService fileService)
     {
-        new FileModel
-        {
-            Id = Guid.Parse("013b03b8-5787-40c4-889e-adc9e8c605d1"),
-            Name = "file1.txt"
-        },
-        new FileModel
-        {
-            Id = Guid.Parse("5160cb78-2aef-435e-9cb4-0008bcb9c080"),
-            Name = "file2.txt"
-        }
-    };
+        this.fileService = fileService;
+    }
 
     [HttpGet]
     public IActionResult GetAll()
     {
-        return Ok(this.files);
+        return Ok(this.fileService.GetFiles());
     }
 
     [HttpGet("{id}")]
     public IActionResult GetById(Guid id)
     {
-        var file = this.files.Find(x => x.Id == id);
-        if (file == null)
+        var file = this.fileService.GetFile(id);
+        if (file.IsEmpty())
         {
             return NotFound();
         }

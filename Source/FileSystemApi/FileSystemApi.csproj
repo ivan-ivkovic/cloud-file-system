@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FileSystem\FileSystem.csproj" />
+    <ProjectReference Include="..\DependencyManagement\DependencyManagement.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

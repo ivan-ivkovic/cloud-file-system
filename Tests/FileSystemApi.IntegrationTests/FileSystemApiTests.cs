@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 using NUnit.Framework;
 
+using P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests.Helpers;
+
 namespace P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests;
 
 [TestFixture]

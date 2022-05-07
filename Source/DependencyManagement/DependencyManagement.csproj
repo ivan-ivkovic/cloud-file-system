@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\FileSystem\FileSystem.csproj" />
+    <ProjectReference Include="..\FileSystemRepository\FileSystemRepository.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>P3Mobility.CloudFileSystem.DependencyManagement</AssemblyName>
+  </PropertyGroup>
+
+</Project>

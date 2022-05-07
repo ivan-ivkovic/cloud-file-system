@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests;
+namespace P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests.Helpers;
 
 public static class JsonOptions
 {
