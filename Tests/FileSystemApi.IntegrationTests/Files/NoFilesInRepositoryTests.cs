@@ -9,11 +9,11 @@ using P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests.Helpers;
 namespace P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests.Files;
 
 [TestFixture]
-public class RepositoryEmptyFileTests
+public class NoFilesInRepositoryTests
 {
     private HttpClient httpClient;
 
-    public RepositoryEmptyFileTests()
+    public NoFilesInRepositoryTests()
     {
         var webApplicationFactory = new WebApplicationFactory<Program>();
         this.httpClient = webApplicationFactory.CreateDefaultClient();
