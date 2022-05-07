@@ -4,7 +4,7 @@ using P3Mobility.CloudFileSystem.DependencyManagement;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the DI container.
 {
     var services = builder.Services;
     services.AddCustomServices();
