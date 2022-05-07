@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -22,16 +23,15 @@ public class FileSystemApiTests
     }
 
     [Test]
-    public async Task GetFiles_ReturnsAllFiles()
+    public async Task GetFiles_FilesDoNotExist_ReturnsEmptyJson()
     {
         // Arrange
-        string expectedFiles = "[{\"id\":\"013b03b8-5787-40c4-889e-adc9e8c605d1\"," +
-            "\"name\":\"file1.txt\"},{\"id\":\"5160cb78-2aef-435e-9cb4-0008bcb9c080\","+
-            "\"name\":\"file2.txt\"}]";
+        string expectedFiles = "[]";
 
         // Act
-        HttpResponseMessage httpResponse = await this.httpClient.GetAsync("/files");
-        string actualFiles = await httpResponse.Content.ReadAsStringAsync();
+        HttpResponseMessage httpResponse = await this.httpClient
+            .GetAsync("/files").ConfigureAwait(false);
+        string actualFiles = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
         // Assert
         Assert.AreEqual(expectedFiles, actualFiles);
@@ -45,8 +45,9 @@ public class FileSystemApiTests
         string expectedFile = $"{{\"id\":\"{fileId}\",\"name\":\"file1.txt\"}}";
 
         // Act
-        HttpResponseMessage httpResponse = await this.httpClient.GetAsync($"/files/{fileId}");
-        string jsonBody = await httpResponse.Content.ReadAsStringAsync();
+        HttpResponseMessage httpResponse = await this.httpClient
+            .GetAsync($"/files/{fileId}").ConfigureAwait(false);
+        string jsonBody = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
         // Assert
         Assert.AreEqual(expectedFile, jsonBody);
@@ -56,13 +57,14 @@ public class FileSystemApiTests
     public async Task GetFileById_FileDoesNotExist_Returns404()
     {
         // Arrange
-        string fileId = "00000000-0000-0000-0000-000000000000";
+        string fileId = Guid.NewGuid().ToString();
         string expectedErrorMessage = "Not Found";
         int expectedStatusCode = 404;
 
         // Act
-        HttpResponseMessage httpResponse = await this.httpClient.GetAsync($"/files/{fileId}");
-        string jsonBody = await httpResponse.Content.ReadAsStringAsync();
+        HttpResponseMessage httpResponse = await this.httpClient
+            .GetAsync($"/files/{fileId}").ConfigureAwait(false);
+        string jsonBody = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
         var responseModel = JsonSerializer.Deserialize<Http404ResponseModel>(
             jsonBody,
             JsonOptions.CamelCasePolicy

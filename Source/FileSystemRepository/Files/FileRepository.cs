@@ -8,33 +8,20 @@ namespace P3Mobility.CloudFileSystem.FileSystemRepository.Files;
 
 internal class FileRepository : IFileRepository
 {
-    private List<FileModel> files = new List<FileModel>()
-    {
-        new FileModel
-        {
-            Id = Guid.Parse("013b03b8-5787-40c4-889e-adc9e8c605d1"),
-            Name = "file1.txt"
-        },
-        new FileModel
-        {
-            Id = Guid.Parse("5160cb78-2aef-435e-9cb4-0008bcb9c080"),
-            Name = "file2.txt"
-        }
-    };
+    private readonly DatabaseContext dbContext;
 
-    public IEnumerable<FileModel> GetAllFiles()
+    public FileRepository(DatabaseContext dbContext)
     {
-        return this.files;
+        this.dbContext = dbContext;
     }
 
-    public FileModel GetFileById(Guid id)
+    public IEnumerable<FileModel>? GetAllFiles()
     {
-        FileModel? file = this.files.Where(x => x.Id == id).FirstOrDefault();
-        if (file == null)
-        {
-            return new EmptyFileModel();
-        }
+        return this.dbContext.Files;
+    }
 
-        return file;
+    public FileModel? GetFileById(Guid id)
+    {
+        return this.dbContext.Files?.Where(x => x.Id == id).FirstOrDefault();
     }
 }

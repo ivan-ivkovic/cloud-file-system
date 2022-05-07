@@ -1,8 +1,6 @@
 using System;
 
-using P3Mobility.CloudFileSystem.FileSystem.Files;
-
-namespace P3Mobility.CloudFileSystem.FileSystemRepository.Files;
+namespace P3Mobility.CloudFileSystem.FileSystem.Files;
 
 internal class EmptyFileModel : FileModel
 {

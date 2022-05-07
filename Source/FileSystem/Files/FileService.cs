@@ -14,11 +14,23 @@ public class FileService
 
     public FileModel GetFile(Guid id)
     {
-        return this.fileRepository.GetFileById(id);
+        var file = this.fileRepository.GetFileById(id);
+        if (file == null)
+        {
+            return new EmptyFileModel();
+        }
+
+        return file;
     }
 
     public IEnumerable<FileModel> GetFiles()
     {
-        return this.fileRepository.GetAllFiles();
+        var files = this.fileRepository.GetAllFiles();
+        if (files == null)
+        {
+            return new List<FileModel>();
+        }
+
+        return files;
     }
 }
