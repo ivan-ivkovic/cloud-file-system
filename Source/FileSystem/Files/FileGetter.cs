@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
 
-using P3Mobility.CloudFileSystem.FileSystem.Exceptions;
-
 namespace P3Mobility.CloudFileSystem.FileSystem.Files;
 
-public class FileService
+public class FileGetter
 {
     private readonly IFileRepository fileRepository;
 
-    public FileService(IFileRepository fileRepository)
+    public FileGetter(IFileRepository fileRepository)
     {
         this.fileRepository = fileRepository;
     }
@@ -34,15 +32,5 @@ public class FileService
         }
 
         return files;
-    }
-
-    public FileModel CreateFile(CreateOrUpdateFileModel file)
-    {
-        if (this.fileRepository.FileExists(file.Name))
-        {
-            throw new FileSystemException("File already exists.");
-        }
-
-        return this.fileRepository.CreateFile(file);
     }
 }

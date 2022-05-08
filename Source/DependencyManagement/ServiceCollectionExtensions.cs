@@ -12,8 +12,10 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddCustomServices(this IServiceCollection services)
     {
-        services.AddScoped<FileService>();
-        services.AddScoped<FolderService>();
+        services.AddScoped<FileGetter>();
+        services.AddScoped<FileCreator>();
+        services.AddScoped<FolderGetter>();
+        services.AddScoped<FolderCreator>();
         services.AddScoped<IFileRepository, FileRepository>();
         services.AddScoped<IFolderRepository, FolderRepository>();
         services.AddDbContext<DatabaseContext>(ServiceLifetime.Scoped);

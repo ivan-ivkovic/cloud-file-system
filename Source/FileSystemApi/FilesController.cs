@@ -11,23 +11,25 @@ namespace P3Mobility.CloudFileSystem.FileSystemApi;
 [Route("[controller]")]
 public class FilesController : ControllerBase
 {
-    private readonly FileService fileService;
+    private readonly FileGetter fileGetter;
+    private readonly FileCreator fileCreator;
 
-    public FilesController(FileService fileService)
+    public FilesController(FileGetter fileGetter, FileCreator fileCreator)
     {
-        this.fileService = fileService;
+        this.fileGetter = fileGetter;
+        this.fileCreator = fileCreator;
     }
 
     [HttpGet]
     public IActionResult GetAll()
     {
-        return Ok(this.fileService.GetFiles());
+        return Ok(this.fileGetter.GetFiles());
     }
 
     [HttpGet("{id}")]
     public IActionResult GetById(Guid id)
     {
-        var file = this.fileService.GetFile(id);
+        var file = this.fileGetter.GetFile(id);
         if (file.IsEmpty())
         {
             return NotFound();
@@ -41,7 +43,7 @@ public class FilesController : ControllerBase
     {
         try
         {
-            FileModel file = this.fileService.CreateFile(model);
+            FileModel file = this.fileCreator.CreateFile(model);
             return Created($"/files/{file.Id}", file);
         }
         catch (FileSystemException)

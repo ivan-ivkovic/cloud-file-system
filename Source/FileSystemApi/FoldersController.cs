@@ -10,17 +10,19 @@ namespace P3Mobility.CloudFileSystem.FileSystemApi;
 [Route("[controller]")]
 public class FoldersController : ControllerBase
 {
-    private readonly FolderService folderService;
+    private readonly FolderGetter folderGetter;
+    private readonly FolderCreator folderCreator;
 
-    public FoldersController(FolderService folderService)
+    public FoldersController(FolderGetter folderGetter, FolderCreator folderCreator)
     {
-        this.folderService = folderService;
+        this.folderGetter = folderGetter;
+        this.folderCreator = folderCreator;
     }
 
     [HttpGet("{id}")]
     public IActionResult GetById(Guid id)
     {
-        FolderResponseModel folder =this.folderService.GetFolder(id);
+        FolderResponseModel folder =this.folderGetter.GetFolder(id);
         if (folder.IsEmpty())
         {
             return NotFound();
@@ -34,7 +36,7 @@ public class FoldersController : ControllerBase
     {
         try
         {
-            var createdFolder = this.folderService.CreateFolder(
+            var createdFolder = this.folderCreator.CreateFolder(
                 createFolderModel.ParentFolderId,
                 createFolderModel.FolderName
             );
