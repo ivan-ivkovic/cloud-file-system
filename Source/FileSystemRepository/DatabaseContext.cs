@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using P3Mobility.CloudFileSystem.FileSystem.Files;
-using P3Mobility.CloudFileSystem.FileSystem.Folders.Models;
+using P3Mobility.CloudFileSystem.FileSystemRepository.Folders.Models;
 
 namespace P3Mobility.CloudFileSystem.FileSystemRepository;
 
@@ -12,6 +12,6 @@ internal class DatabaseContext : DbContext
     }
 
     internal DbSet<FileModel>? Files { get; set; }
-    internal DbSet<FolderModel>? Folders { get; set; }
-    internal DbSet<HierarchyModel>? Hierarchies { get; set; } 
+    internal DbSet<FolderDatabaseModel>? Folders { get; set; }
+    internal DbSet<HierarchyDatabaseModel>? Hierarchies { get; set; } 
 }

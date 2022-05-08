@@ -1,4 +1,5 @@
 using System;
+
 namespace P3Mobility.CloudFileSystem.FileSystem.Folders.Models;
 
 public class FolderModel : BaseFolderModel
@@ -9,8 +10,6 @@ public class FolderModel : BaseFolderModel
     }
 
     public Guid Id { get; set; }
-
-    public Guid ParentFolderId { get; set; }
 
     public string FolderName { get; set; }
 

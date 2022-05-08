@@ -1,7 +1,7 @@
 using System;
-namespace P3Mobility.CloudFileSystem.FileSystem.Folders.Models;
+namespace P3Mobility.CloudFileSystem.FileSystemRepository.Folders.Models;
 
-public class HierarchyModel
+public class HierarchyDatabaseModel
 {
     public Guid Id { get; set; }
 

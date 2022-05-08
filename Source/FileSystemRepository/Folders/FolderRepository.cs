@@ -1,11 +1,12 @@
-using System.Runtime.CompilerServices;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+
+using Microsoft.Extensions.Configuration;
 
 using P3Mobility.CloudFileSystem.FileSystem.Folders;
 using P3Mobility.CloudFileSystem.FileSystem.Folders.Models;
-using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
+using P3Mobility.CloudFileSystem.FileSystemRepository.Folders.Models;
 
 namespace P3Mobility.CloudFileSystem.FileSystemRepository.Folders;
 
@@ -49,7 +50,14 @@ internal class FolderRepository : IFolderRepository
 
     public FolderModel? GetFolder(Guid folderId)
     {
-        return this.dbContext.Folders?.FirstOrDefault(x => x.Id == folderId);
+        return this.dbContext.Folders?
+            .Where(x => x.Id == folderId)
+            .Select(x => new FolderModel
+            {
+                Id = x.Id,
+                FolderName = x.FolderName
+            })
+            .FirstOrDefault();
 
     }
 
@@ -74,20 +82,20 @@ internal class FolderRepository : IFolderRepository
             throw new Exception();
         }
 
-        var folderModel = new FolderModel
+        var folderDatabaseModel = new FolderDatabaseModel
         {
             Id = Guid.NewGuid(),
             ParentFolderId = parentFolderId,
             FolderName = folderName
         };
-        this.dbContext.Folders.Add(folderModel);
+        this.dbContext.Folders.Add(folderDatabaseModel);
         this.dbContext.SaveChanges();
 
-        var zeroDepthHierarchyModel = new HierarchyModel
+        var zeroDepthHierarchyModel = new HierarchyDatabaseModel
         {
             Id = Guid.NewGuid(),
-            ParentFolderId = folderModel.Id,
-            ChildFolderId = folderModel.Id,
+            ParentFolderId = folderDatabaseModel.Id,
+            ChildFolderId = folderDatabaseModel.Id,
             Depth = 0
         };
         this.dbContext.Add(zeroDepthHierarchyModel);
@@ -95,8 +103,8 @@ internal class FolderRepository : IFolderRepository
 
         var query = from p in this.dbContext.Hierarchies
                     from c in this.dbContext.Hierarchies
-                    where p.ChildFolderId == parentFolderId && c.ParentFolderId == folderModel.Id
-                    select new HierarchyModel
+                    where p.ChildFolderId == parentFolderId && c.ParentFolderId == folderDatabaseModel.Id
+                    select new HierarchyDatabaseModel
                     {
                         Id = Guid.NewGuid(),
                         ParentFolderId = p.ParentFolderId,
@@ -107,6 +115,10 @@ internal class FolderRepository : IFolderRepository
         this.dbContext.AddRange(query.ToList());
         this.dbContext.SaveChanges();
 
-        return folderModel;
+        return new FolderModel
+        {
+            Id = folderDatabaseModel.Id,
+            FolderName = folderDatabaseModel.FolderName
+        };
     }
 }

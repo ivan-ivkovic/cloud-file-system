@@ -10,7 +10,6 @@ public class EmptyFolderResponseModel : FolderResponseModel
             new FolderModel
             {
                 Id = Guid.Empty,
-                ParentFolderId = Guid.Empty,
                 FolderName = string.Empty
             },
             new List<Guid>()

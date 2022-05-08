@@ -45,7 +45,6 @@ public class CreateFolderTests
         // Assert
         Assert.IsNotNull(createdFolder);
         Assert.AreEqual(expectedStatusCode, httpResponse.StatusCode);
-        Assert.AreEqual(createFolderModel.ParentFolderId, createdFolder?.ParentFolderId);
         Assert.AreEqual(createFolderModel.FolderName, createdFolder?.FolderName);
         Assert.AreEqual(0, createdFolder?.ParentFolderIds.Count());
     }

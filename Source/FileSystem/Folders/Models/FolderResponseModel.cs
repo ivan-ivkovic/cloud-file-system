@@ -15,14 +15,11 @@ public class FolderResponseModel : BaseFolderModel
     public FolderResponseModel(FolderModel folderModel, IEnumerable<Guid> parentFolderIds)
     {
         this.Id = folderModel.Id;
-        this.ParentFolderId = folderModel.ParentFolderId;
         this.FolderName = folderModel.FolderName;
         this.ParentFolderIds = parentFolderIds;
     }
 
     public Guid Id { get; set; }
-
-    public Guid ParentFolderId { get; set; }
 
     public string FolderName { get; set; }
 
@@ -30,9 +27,6 @@ public class FolderResponseModel : BaseFolderModel
 
     public override bool IsEmpty()
     {
-        return
-            this.Id == Guid.Empty &&
-            this.ParentFolderId == Guid.Empty &&
-            this.ParentFolderIds.Count() == 0;
+        return this.Id == Guid.Empty && this.ParentFolderIds.Count() == 0;
     }
 }
