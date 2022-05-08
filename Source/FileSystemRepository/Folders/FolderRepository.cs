@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System;
 using System.Linq;
 
@@ -61,7 +62,8 @@ internal class FolderRepository : IFolderRepository
 
         return this.dbContext.Hierarchies
             .Where(x => x.ChildFolderId == folderId && x.ParentFolderId != x.ChildFolderId)
-            .Select(y => y.ParentFolderId)
+            .OrderBy(x => x.Depth)
+            .Select(x => x.ParentFolderId)
             .ToList();
     }
 

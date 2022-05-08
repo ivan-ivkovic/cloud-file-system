@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -16,17 +17,32 @@ using P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests.Helpers;
 namespace P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests.Files;
 
 [TestFixture]
-public class FilesExistInRepositoryTests
+public class GetFileTests
 {
     private HttpClient httpClient;
 
-    public FilesExistInRepositoryTests()
+    public GetFileTests()
     {
         var webApplicationFactory = new WebApplicationFactory<Program>();
         this.httpClient = webApplicationFactory.CreateDefaultClient();
     }
 
     [Test, Order(1)]
+    public async Task GetFiles_FilesDoNotExist_ReturnsEmptyJson()
+    {
+        // Arrange
+        string expectedFiles = "[]";
+
+        // Act
+        HttpResponseMessage httpResponse = await this.httpClient
+            .GetAsync("/files").ConfigureAwait(false);
+        string actualFiles = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+        // Assert
+        Assert.AreEqual(expectedFiles, actualFiles);
+    }
+
+    [Test, Order(2)]
     public async Task GetFiles_FilesExist_ReturnsFiles()
     {
         // Arrange
@@ -46,7 +62,7 @@ public class FilesExistInRepositoryTests
         Assert.IsTrue(actualFiles?.Any(x => x.Id == file2.Id));
     }
 
-    [Test, Order(2)]
+    [Test]
     public async Task GetFileById_FileExists_ReturnsCorrectFile()
     {
         // Arrange
@@ -65,24 +81,21 @@ public class FilesExistInRepositoryTests
     }
 
     [Test]
-    public async Task CreateFile_FileAreadyExists_ReturnsBadRequest()
+    public async Task GetFileById_FileDoesNotExist_Returns404()
     {
         // Arrange
-        string fileName = "same-file-name.txt";
-        await this.CreateTestFile(fileName).ConfigureAwait(false);
-        string expectedErrorMessage = "Bad Request";
-        int expectedStatusCode = 400;
+        string fileId = Guid.NewGuid().ToString();
+        string expectedErrorMessage = "Not Found";
+        int expectedStatusCode = 404;
 
         // Act
-        HttpContent content = new StringContent(
-            $"{{\"name\": \"{fileName}\"}}",
-            Encoding.UTF8,
-            "application/json"
-        );
         HttpResponseMessage httpResponse = await this.httpClient
-            .PostAsync("/files", content).ConfigureAwait(false);
-        HttpErrorResponseModel? responseModel = await httpResponse.Content
-            .ReadFromJsonAsync<HttpErrorResponseModel>().ConfigureAwait(false);
+            .GetAsync($"/files/{fileId}").ConfigureAwait(false);
+        string jsonBody = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+        var responseModel = JsonSerializer.Deserialize<HttpErrorResponseModel>(
+            jsonBody,
+            JsonOptions.CamelCasePolicy
+        );
 
         // Assert
         Assert.AreEqual(expectedStatusCode, responseModel?.Status);

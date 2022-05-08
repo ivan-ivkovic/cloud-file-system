@@ -14,36 +14,14 @@ using P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests.Helpers;
 namespace P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests.Folders;
 
 [TestFixture]
-public class FolderTests
+public class CreateFolderTests
 {
     private HttpClient httpClient;
 
-    public FolderTests()
+    public CreateFolderTests()
     {
         var webApplicationFactory = new WebApplicationFactory<Program>();
         this.httpClient = webApplicationFactory.CreateDefaultClient();
-    }
-
-    [Test]
-    public async Task GetFolder_FolderDoesNotExist_ReturnsNotFound()
-    {
-        // Arrange
-        string folderId = Guid.NewGuid().ToString();
-        string expectedErrorMessage = "Not Found";
-        int expectedStatusCode = 404;
-
-        // Act
-        HttpResponseMessage httpResponse = await this.httpClient
-            .GetAsync($"/folders/{folderId}").ConfigureAwait(false);
-        string jsonBody = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-        var responseModel = JsonSerializer.Deserialize<HttpErrorResponseModel>(
-            jsonBody,
-            JsonOptions.CamelCasePolicy
-        );
-
-        // Assert
-        Assert.AreEqual(expectedStatusCode, responseModel?.Status);
-        Assert.AreEqual(expectedErrorMessage, responseModel?.Title);
     }
 
     [Test]
