@@ -12,6 +12,6 @@
 		<PackageReference Include="coverlet.collector" Version="3.1.2"/>
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\Source\FileSystemApi\FileSystemApi.csproj"/>
+		<ProjectReference Include="..\..\Source\DependencyManagement\DependencyManagement.csproj"/>
 	</ItemGroup>
 </Project>

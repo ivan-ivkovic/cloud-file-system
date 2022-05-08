@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/Source/FileSystemApi/bin/Debug/net6.0/P3Mobility.CloudFileSystem.FileSystemApi.dll",
+            "program": "${workspaceFolder}/Source/DependencyManagement/bin/Debug/net6.0/P3Mobility.CloudFileSystem.DependencyManagement.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",

@@ -6,10 +6,11 @@
 		<AssemblyName>P3Mobility.CloudFileSystem.FileSystemRepository</AssemblyName>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.4" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.4"/>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.4"/>
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\FileSystem\FileSystem.csproj" />
+		<ProjectReference Include="..\FileSystem\FileSystem.csproj"/>
 	</ItemGroup>
 	<ItemGroup>
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">

@@ -2,7 +2,7 @@ using System;
 
 namespace P3Mobility.CloudFileSystem.FileSystem.Files;
 
-internal class EmptyFileModel : FileModel
+internal sealed class EmptyFileModel : FileModel
 {
     internal EmptyFileModel()
     {

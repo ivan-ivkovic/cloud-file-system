@@ -2,6 +2,7 @@ using System;
 
 using Microsoft.AspNetCore.Mvc;
 
+using P3Mobility.CloudFileSystem.FileSystem.Exceptions;
 using P3Mobility.CloudFileSystem.FileSystem.Files;
 
 namespace P3Mobility.CloudFileSystem.FileSystemApi;
@@ -40,9 +41,10 @@ public class FilesController : ControllerBase
     {
         try
         {
-            return Ok(this.fileService.CreateFile(model));
+            FileModel file = this.fileService.CreateFile(model);
+            return Created($"/files/{file.Id}", file);
         }
-        catch (FileRepositoryException)
+        catch (FileSystemException)
         {
             return BadRequest();
         }

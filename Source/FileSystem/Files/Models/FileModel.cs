@@ -2,7 +2,7 @@ using System;
 
 namespace P3Mobility.CloudFileSystem.FileSystem.Files;
 
-public class FileModel : BaseModel
+public class FileModel : BaseFileModel
 {
     public FileModel()
     {

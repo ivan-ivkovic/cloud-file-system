@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using P3Mobility.CloudFileSystem.FileSystem.Exceptions;
+
 namespace P3Mobility.CloudFileSystem.FileSystem.Files;
 
 public class FileService
@@ -38,7 +40,7 @@ public class FileService
     {
         if (this.fileRepository.FileExists(file.Name))
         {
-            throw new FileRepositoryException("File already exists.");
+            throw new FileSystemException("File already exists.");
         }
 
         return this.fileRepository.CreateFile(file);
