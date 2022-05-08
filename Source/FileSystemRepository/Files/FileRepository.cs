@@ -24,14 +24,16 @@ internal class FileRepository : IFileRepository
         });
     }
 
-    public bool FileExists(string fileName)
+    public bool FileExists(Guid folderId, string fileName)
     {
         if (this.dbContext.Files == null)
         {
             throw new Exception();
         }
 
-        return this.dbContext.Files.Any<FileDatabaseModel>(x => x.Name == fileName);
+        return this.dbContext.Files.Any<FileDatabaseModel>(
+            x => x.ParentFolderId == folderId && x.Name == fileName
+        );
     }
 
     public FileModel? GetFileById(Guid id)
@@ -56,6 +58,7 @@ internal class FileRepository : IFileRepository
         var addedFile = this.dbContext.Files.Add(new FileDatabaseModel
         {
             Id = Guid.NewGuid(),
+            ParentFolderId = file.FolderId,
             Name = file.Name
         });
         this.dbContext.SaveChanges();

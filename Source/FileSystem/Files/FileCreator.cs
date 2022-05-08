@@ -13,7 +13,7 @@ public class FileCreator
 
     public FileModel CreateFile(CreateOrUpdateFileModel file)
     {
-        if (this.fileRepository.FileExists(file.Name))
+        if (this.fileRepository.FileExists(file.FolderId, file.Name))
         {
             throw new FileSystemException("File already exists.");
         }

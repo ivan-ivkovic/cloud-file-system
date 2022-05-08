@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -29,13 +30,18 @@ public class CreateFileTests
     {
         // Arrange
         string fileName = "same-file-name.txt";
+        var file = new CreateOrUpdateFileModel
+        {
+            Name = fileName,
+            FolderId = Guid.Empty
+        };
         await this.CreateTestFile(fileName).ConfigureAwait(false);
         string expectedErrorMessage = "Bad Request";
         int expectedStatusCode = 400;
 
         // Act
         HttpContent content = new StringContent(
-            $"{{\"name\": \"{fileName}\"}}",
+            JsonSerializer.Serialize<CreateOrUpdateFileModel>(file, JsonOptions.CamelCasePolicy),
             Encoding.UTF8,
             "application/json"
         );
@@ -51,11 +57,20 @@ public class CreateFileTests
 
     private async Task<FileModel> CreateTestFile(string name)
     {
+        var file = new CreateOrUpdateFileModel
+        {
+            Name = name,
+            FolderId = Guid.Empty
+        };
         HttpContent content = new StringContent(
-            $"{{\"name\": \"{name}\"}}",
+            JsonSerializer.Serialize<CreateOrUpdateFileModel>(
+                file,
+                JsonOptions.CamelCasePolicy
+            ),
             Encoding.UTF8,
             "application/json"
         );
+
         HttpResponseMessage httpResponse = await this.httpClient
             .PostAsync("/files", content).ConfigureAwait(false);
         FileModel? createdFile = await httpResponse.Content

@@ -104,11 +104,20 @@ public class GetFileTests
 
     private async Task<FileModel> CreateTestFile(string name)
     {
+        var file = new CreateOrUpdateFileModel
+        {
+            Name = name,
+            FolderId = Guid.Empty
+        };
         HttpContent content = new StringContent(
-            $"{{\"name\": \"{name}\"}}",
+            JsonSerializer.Serialize<CreateOrUpdateFileModel>(
+                file,
+                JsonOptions.CamelCasePolicy
+            ),
             Encoding.UTF8,
             "application/json"
         );
+
         HttpResponseMessage httpResponse = await this.httpClient
             .PostAsync("/files", content).ConfigureAwait(false);
         FileModel? createdFile = await httpResponse.Content
