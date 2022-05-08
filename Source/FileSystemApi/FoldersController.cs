@@ -20,7 +20,7 @@ public class FoldersController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult GetById(Guid id)
     {
-        FolderModel folder =this.folderService.GetFolder(id);
+        FolderResponseModel folder =this.folderService.GetFolder(id);
         if (folder.IsEmpty())
         {
             return NotFound();

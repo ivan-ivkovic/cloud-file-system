@@ -3,16 +3,20 @@ using System.Linq;
 
 using P3Mobility.CloudFileSystem.FileSystem.Folders;
 using P3Mobility.CloudFileSystem.FileSystem.Folders.Models;
+using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 
 namespace P3Mobility.CloudFileSystem.FileSystemRepository.Folders;
 
 internal class FolderRepository : IFolderRepository
 {
     private readonly DatabaseContext dbContext;
+    private readonly Guid rootFolderId;
 
-    public FolderRepository(DatabaseContext dbContext)
+    public FolderRepository(DatabaseContext dbContext, IConfiguration configuration)
     {
         this.dbContext = dbContext;
+        this.rootFolderId = Guid.Parse(configuration["RootFolderId"]);
     }
 
     public bool FolderExists(Guid folderId)
@@ -20,6 +24,11 @@ internal class FolderRepository : IFolderRepository
         if (this.dbContext.Folders == null)
         {
             return false;
+        }
+
+        if (folderId == this.rootFolderId)
+        {
+            return true;
         }
 
         return this.dbContext.Folders.Any(x => x.Id == folderId);
@@ -40,6 +49,20 @@ internal class FolderRepository : IFolderRepository
     public FolderModel? GetFolder(Guid folderId)
     {
         return this.dbContext.Folders?.FirstOrDefault(x => x.Id == folderId);
+
+    }
+
+    public IEnumerable<Guid> GetFolderAncestorIds(Guid folderId)
+    {
+        if (this.dbContext.Hierarchies == null)
+        {
+            throw new Exception();
+        }
+
+        return this.dbContext.Hierarchies
+            .Where(x => x.ChildFolderId == folderId && x.ParentFolderId != x.ChildFolderId)
+            .Select(y => y.ParentFolderId)
+            .ToList();
     }
 
     public FolderModel CreateFolder(Guid parentFolderId, string folderName)
