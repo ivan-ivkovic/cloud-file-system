@@ -17,7 +17,11 @@ internal class FileRepository : IFileRepository
 
     public IEnumerable<FileModel>? GetAllFiles()
     {
-        return this.dbContext.Files;
+        return this.dbContext.Files?.Select(x => new FileModel
+        {
+            Id = x.Id,
+            Name = x.Name
+        });
     }
 
     public bool FileExists(string fileName)
@@ -27,12 +31,19 @@ internal class FileRepository : IFileRepository
             throw new Exception();
         }
 
-        return this.dbContext.Files.Any<FileModel>(x => x.Name == fileName);
+        return this.dbContext.Files.Any<FileDatabaseModel>(x => x.Name == fileName);
     }
 
     public FileModel? GetFileById(Guid id)
     {
-        return this.dbContext.Files?.Where(x => x.Id == id).FirstOrDefault();
+        return this.dbContext.Files?
+            .Where(x => x.Id == id)
+            .Select(x => new FileModel
+            {
+                Id = x.Id,
+                Name = x.Name
+            })
+            .FirstOrDefault();
     }
 
     public FileModel CreateFile(CreateOrUpdateFileModel file)
@@ -42,12 +53,16 @@ internal class FileRepository : IFileRepository
             throw new Exception();
         }
 
-        var addedFile = this.dbContext.Files.Add(new FileModel()
+        var addedFile = this.dbContext.Files.Add(new FileDatabaseModel
         {
             Id = Guid.NewGuid(),
             Name = file.Name
         });
         this.dbContext.SaveChanges();
-        return addedFile.Entity;
+        return new FileModel
+        {
+            Id = addedFile.Entity.Id,
+            Name = addedFile.Entity.Name
+        };
     }
 }
