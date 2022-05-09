@@ -2,11 +2,10 @@ using System;
 
 namespace P3Mobility.CloudFileSystem.FileSystem.Files;
 
-internal sealed class EmptyFileModel : FileModel
+internal sealed class EmptyFileResponseModel : FileResponseModel
 {
-    internal EmptyFileModel()
+    internal EmptyFileResponseModel()
     {
         this.Id = Guid.Empty;
-        this.Name = string.Empty;
     }
 }

@@ -19,12 +19,14 @@ namespace P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests.Files;
 [TestFixture]
 public class GetFileTests
 {
-    private HttpClient httpClient;
+    private readonly HttpClient httpClient;
+    private readonly Guid RootLevelFolderId;
 
     public GetFileTests()
     {
         var webApplicationFactory = new WebApplicationFactory<Program>();
         this.httpClient = webApplicationFactory.CreateDefaultClient();
+        this.RootLevelFolderId = Guid.Empty;
     }
 
     [Test, Order(1)]
@@ -46,38 +48,55 @@ public class GetFileTests
     public async Task GetFiles_FilesExist_ReturnsFiles()
     {
         // Arrange
-        FileModel file1 = await this.CreateTestFile("file1.txt").ConfigureAwait(false);
-        FileModel file2 = await this.CreateTestFile("file2.txt").ConfigureAwait(false);
+        var createOrUpdateFileModel1 = new CreateOrUpdateFileModel
+        {
+            Name = "file1.txt",
+            FolderId = this.RootLevelFolderId
+        };
+        var createOrUpdateFileModel2 = new CreateOrUpdateFileModel
+        {
+            Name = "file2.txt",
+            FolderId = this.RootLevelFolderId
+        };
+        FileResponseModel file1 = await this.CreateTestFile(createOrUpdateFileModel1).ConfigureAwait(false);
+        FileResponseModel file2 = await this.CreateTestFile(createOrUpdateFileModel2).ConfigureAwait(false);
 
         // Act
         HttpResponseMessage httpResponse = await this.httpClient
             .GetAsync("/files").ConfigureAwait(false);
-        List<FileModel>? actualFiles = await httpResponse.Content
-            .ReadFromJsonAsync<List<FileModel>>().ConfigureAwait(false);
+        List<FileResponseModel>? actualFiles = await httpResponse.Content
+            .ReadFromJsonAsync<List<FileResponseModel>>().ConfigureAwait(false);
 
         // Assert
         Assert.NotNull(actualFiles);
         Assert.AreEqual(2, actualFiles?.Count);
         Assert.IsTrue(actualFiles?.Any(x => x.Id == file1.Id));
         Assert.IsTrue(actualFiles?.Any(x => x.Id == file2.Id));
+        Assert.IsTrue(actualFiles?.All(x => x.AncestorFolderIds.Count() == 0));
     }
 
     [Test]
     public async Task GetFileById_FileExists_ReturnsCorrectFile()
     {
         // Arrange
-        FileModel expectedFile = await this.CreateTestFile("file3.txt").ConfigureAwait(false);
+        var createOrUpdateFileModel = new CreateOrUpdateFileModel
+        {
+            Name = "file3.txt",
+            FolderId = this.RootLevelFolderId
+        };
+        FileResponseModel expectedFile = await this.CreateTestFile(createOrUpdateFileModel).ConfigureAwait(false);
 
         // Act
         HttpResponseMessage httpResponse = await this.httpClient
             .GetAsync($"/files/{expectedFile?.Id}").ConfigureAwait(false);
-        FileModel? actualFile = await httpResponse.Content
-            .ReadFromJsonAsync<FileModel>().ConfigureAwait(false);
+        FileResponseModel? actualFile = await httpResponse.Content
+            .ReadFromJsonAsync<FileResponseModel>().ConfigureAwait(false);
 
         // Assert
         Assert.NotNull(actualFile);
         Assert.AreEqual(expectedFile?.Id, actualFile?.Id);
         Assert.AreEqual(expectedFile?.Name, actualFile?.Name);
+        Assert.AreEqual(0, actualFile?.AncestorFolderIds.Count());
     }
 
     [Test]
@@ -102,13 +121,8 @@ public class GetFileTests
         Assert.AreEqual(expectedErrorMessage, responseModel?.Title);
     }
 
-    private async Task<FileModel> CreateTestFile(string name)
+    private async Task<FileResponseModel> CreateTestFile(CreateOrUpdateFileModel file)
     {
-        var file = new CreateOrUpdateFileModel
-        {
-            Name = name,
-            FolderId = Guid.Empty
-        };
         HttpContent content = new StringContent(
             JsonSerializer.Serialize<CreateOrUpdateFileModel>(
                 file,
@@ -120,8 +134,8 @@ public class GetFileTests
 
         HttpResponseMessage httpResponse = await this.httpClient
             .PostAsync("/files", content).ConfigureAwait(false);
-        FileModel? createdFile = await httpResponse.Content
-            .ReadFromJsonAsync<FileModel>().ConfigureAwait(false);
+        FileResponseModel? createdFile = await httpResponse.Content
+            .ReadFromJsonAsync<FileResponseModel>().ConfigureAwait(false);
 
         if (createdFile == null)
         {

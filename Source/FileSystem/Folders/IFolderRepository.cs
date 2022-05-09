@@ -15,5 +15,7 @@ public interface IFolderRepository
 
     IEnumerable<Guid> GetFolderAncestorIds(Guid folderId);
 
+    IEnumerable<Guid> GetFileAncestorIds(Guid folderId);
+
     FolderModel CreateFolder(Guid parentFolderId, string folderPath);
 }

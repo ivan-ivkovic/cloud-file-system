@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using NUnit.Framework;
 
 using P3Mobility.CloudFileSystem.FileSystem.Files;
+using P3Mobility.CloudFileSystem.FileSystem.Folders.Models;
 using P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests.Helpers;
 
 namespace P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests.Files;
@@ -17,12 +19,14 @@ namespace P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests.Files;
 [TestFixture]
 public class CreateFileTests
 {
-    private HttpClient httpClient;
+    private readonly HttpClient httpClient;
+    private readonly Guid RootLevelFolderId;
 
     public CreateFileTests()
     {
         var webApplicationFactory = new WebApplicationFactory<Program>();
         this.httpClient = webApplicationFactory.CreateDefaultClient();
+        this.RootLevelFolderId = Guid.Empty;
     }
 
     [Test]
@@ -33,9 +37,9 @@ public class CreateFileTests
         var file = new CreateOrUpdateFileModel
         {
             Name = fileName,
-            FolderId = Guid.Empty
+            FolderId = this.RootLevelFolderId
         };
-        await this.CreateTestFile(fileName).ConfigureAwait(false);
+        await this.CreateTestFile(file).ConfigureAwait(false);
         string expectedErrorMessage = "Bad Request";
         int expectedStatusCode = 400;
 
@@ -55,13 +59,46 @@ public class CreateFileTests
         Assert.AreEqual(expectedErrorMessage, responseModel?.Title);
     }
 
-    private async Task<FileModel> CreateTestFile(string name)
+    [Test]
+    public async Task CreateFileInsideAFolder_CreationSuccessful_ReturnsOk()
     {
-        var file = new CreateOrUpdateFileModel
+        // Arrange
+        var folder = await this.CreateRootLevelTestFolder().ConfigureAwait(false);
+        if (folder == null)
         {
-            Name = name,
-            FolderId = Guid.Empty
+            Assert.Fail();
+            return;
+        }
+
+        // Act
+        var createOrUpdateFileModel = new CreateOrUpdateFileModel
+        {
+            Name = "new-file",
+            FolderId = folder.Id
         };
+        HttpContent content = new StringContent(
+            JsonSerializer.Serialize<CreateOrUpdateFileModel>(
+                createOrUpdateFileModel,
+                JsonOptions.CamelCasePolicy
+            ),
+            Encoding.UTF8,
+            "application/json"
+        );
+
+        HttpResponseMessage httpResponse = await this.httpClient
+            .PostAsync("/files", content).ConfigureAwait(false);
+        FileResponseModel? actualFile = await httpResponse.Content
+            .ReadFromJsonAsync<FileResponseModel>().ConfigureAwait(false);
+
+        // Assert
+        Assert.NotNull(actualFile);
+        Assert.AreEqual(createOrUpdateFileModel.Name, actualFile?.Name);
+        Assert.AreEqual(1, actualFile?.AncestorFolderIds.Count());
+        Assert.AreEqual(folder.Id, actualFile?.AncestorFolderIds.First());
+    }
+
+    private async Task<FileResponseModel> CreateTestFile(CreateOrUpdateFileModel file)
+    {
         HttpContent content = new StringContent(
             JsonSerializer.Serialize<CreateOrUpdateFileModel>(
                 file,
@@ -73,8 +110,8 @@ public class CreateFileTests
 
         HttpResponseMessage httpResponse = await this.httpClient
             .PostAsync("/files", content).ConfigureAwait(false);
-        FileModel? createdFile = await httpResponse.Content
-            .ReadFromJsonAsync<FileModel>().ConfigureAwait(false);
+        FileResponseModel? createdFile = await httpResponse.Content
+            .ReadFromJsonAsync<FileResponseModel>().ConfigureAwait(false);
 
         if (createdFile == null)
         {
@@ -82,5 +119,37 @@ public class CreateFileTests
         }
 
         return createdFile;
+    }
+
+    private async Task<FolderResponseModel?> CreateRootLevelTestFolder()
+    {
+        // Arrange
+        var createFolderModel = new CreateFolderModel
+        {
+            ParentFolderId = this.RootLevelFolderId,
+            FolderName = "new-folder"
+        };
+        HttpContent requestContent = this.CreateRequestContent(createFolderModel);
+
+        // Act
+        HttpResponseMessage httpResponse = await this.httpClient
+            .PostAsync("/folders", requestContent).ConfigureAwait(false);
+        FolderResponseModel? createdFolder = await httpResponse.Content
+            .ReadFromJsonAsync<FolderResponseModel>().ConfigureAwait(false);
+
+        return createdFolder;
+    }
+
+    private HttpContent CreateRequestContent(CreateFolderModel createFolderModel)
+    {
+        string requestPayload = JsonSerializer.Serialize<CreateFolderModel>(
+            createFolderModel,
+            JsonOptions.CamelCasePolicy
+        );
+        return new StringContent(
+            requestPayload,
+            Encoding.UTF8,
+            "application/json"
+        );
     }
 }

@@ -20,7 +20,8 @@ internal class FileRepository : IFileRepository
         return this.dbContext.Files?.Select(x => new FileModel
         {
             Id = x.Id,
-            Name = x.Name
+            Name = x.Name,
+            FolderId = x.ParentFolderId
         });
     }
 
@@ -43,7 +44,8 @@ internal class FileRepository : IFileRepository
             .Select(x => new FileModel
             {
                 Id = x.Id,
-                Name = x.Name
+                Name = x.Name,
+                FolderId = x.ParentFolderId
             })
             .FirstOrDefault();
     }
@@ -61,11 +63,13 @@ internal class FileRepository : IFileRepository
             ParentFolderId = file.FolderId,
             Name = file.Name
         });
+
         this.dbContext.SaveChanges();
         return new FileModel
         {
             Id = addedFile.Entity.Id,
-            Name = addedFile.Entity.Name
+            Name = addedFile.Entity.Name,
+            FolderId = addedFile.Entity.ParentFolderId
         };
     }
 }

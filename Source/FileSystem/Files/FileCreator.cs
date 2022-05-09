@@ -14,7 +14,7 @@ public class FileCreator
         this.folderRepository = folderRepository;
     }
 
-    public FileModel CreateFile(CreateOrUpdateFileModel file)
+    public FileResponseModel CreateFile(CreateOrUpdateFileModel file)
     {
         if (!this.folderRepository.FolderExists(file.FolderId))
         {
@@ -26,6 +26,13 @@ public class FileCreator
             throw new FileSystemException("File already exists.");
         }
 
-        return this.fileRepository.CreateFile(file);
+        var createdFile = this.fileRepository.CreateFile(file);
+        var ancestorIds = this.folderRepository.GetFileAncestorIds(createdFile.FolderId);
+        return new FileResponseModel
+        {
+            Id = createdFile.Id,
+            Name = createdFile.Name,
+            AncestorFolderIds = ancestorIds
+        };
     }
 }

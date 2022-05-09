@@ -75,6 +75,20 @@ internal class FolderRepository : IFolderRepository
             .ToList();
     }
 
+    public IEnumerable<Guid> GetFileAncestorIds(Guid folderId)
+    {
+        if (this.dbContext.Hierarchies == null)
+        {
+            throw new Exception();
+        }
+
+        return this.dbContext.Hierarchies
+            .Where(x => x.ChildFolderId == folderId)
+            .OrderBy(x => x.Depth)
+            .Select(x => x.ParentFolderId)
+            .ToList();
+    }
+
     public FolderModel CreateFolder(Guid parentFolderId, string folderName)
     {
         if (this.dbContext.Folders == null || this.dbContext.Hierarchies == null)

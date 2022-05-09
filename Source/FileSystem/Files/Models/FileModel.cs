@@ -2,7 +2,7 @@ using System;
 
 namespace P3Mobility.CloudFileSystem.FileSystem.Files;
 
-public class FileModel : BaseFileModel
+public class FileModel
 {
     public FileModel()
     {
@@ -11,10 +11,7 @@ public class FileModel : BaseFileModel
 
     public Guid Id { get; set; }
 
-    public string Name { get; set; }
+    public Guid FolderId { get; set; }
 
-    public override bool IsEmpty()
-    {
-        return this.Id == Guid.Empty;
-    }
+    public string Name { get; set; }
 }

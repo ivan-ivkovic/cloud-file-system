@@ -43,7 +43,7 @@ public class FilesController : ControllerBase
     {
         try
         {
-            FileModel file = this.fileCreator.CreateFile(model);
+            FileResponseModel file = this.fileCreator.CreateFile(model);
             return Created($"/files/{file.Id}", file);
         }
         catch (FileSystemException)

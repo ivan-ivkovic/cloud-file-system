@@ -16,12 +16,14 @@ namespace P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests.Folders;
 [TestFixture]
 public class CreateFolderTests
 {
-    private HttpClient httpClient;
+    private readonly HttpClient httpClient;
+    private readonly Guid RootLevelFolderId;
 
     public CreateFolderTests()
     {
         var webApplicationFactory = new WebApplicationFactory<Program>();
         this.httpClient = webApplicationFactory.CreateDefaultClient();
+        this.RootLevelFolderId = Guid.Empty;
     }
 
     [Test]
@@ -31,7 +33,7 @@ public class CreateFolderTests
         HttpStatusCode expectedStatusCode = HttpStatusCode.Created;
         var createFolderModel = new CreateFolderModel
         {
-            ParentFolderId = Guid.Empty,
+            ParentFolderId = this.RootLevelFolderId,
             FolderName = "new-folder"
         };
         HttpContent requestContent = this.CreateRequestContent(createFolderModel);
@@ -56,7 +58,7 @@ public class CreateFolderTests
         HttpStatusCode expectedStatusCode = HttpStatusCode.Created;
         var requestFolder1 = new CreateFolderModel
         {
-            ParentFolderId = Guid.Empty,
+            ParentFolderId = this.RootLevelFolderId,
             FolderName = "folder1"
         };
         HttpContent requestContent = this.CreateRequestContent(requestFolder1);
