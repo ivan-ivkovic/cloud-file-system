@@ -2,7 +2,7 @@ using System;
 
 namespace P3Mobility.CloudFileSystem.FileSystem.Folders.Models;
 
-public class FolderModel : BaseFolderModel
+public class FolderModel
 {
     public FolderModel()
     {
@@ -12,9 +12,4 @@ public class FolderModel : BaseFolderModel
     public Guid Id { get; set; }
 
     public string FolderName { get; set; }
-
-    public override bool IsEmpty()
-    {
-        return this.Id == Guid.Empty;
-    }
 }
