@@ -1,6 +1,6 @@
 using System;
 
-namespace P3Mobility.CloudFileSystem.FileSystemRepository.Folders.Models;
+namespace CloudFileSystem.FileSystemRepository.Folders.Models;
 
 internal class FolderDatabaseModel
 {

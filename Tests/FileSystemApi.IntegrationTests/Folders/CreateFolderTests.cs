@@ -8,10 +8,10 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using NUnit.Framework;
-using P3Mobility.CloudFileSystem.FileSystem.Folders.Models;
-using P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests.Helpers;
+using CloudFileSystem.FileSystem.Folders.Models;
+using CloudFileSystem.FileSystemApi.IntegrationTests.Helpers;
 
-namespace P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests.Folders;
+namespace CloudFileSystem.FileSystemApi.IntegrationTests.Folders;
 
 [TestFixture]
 public class CreateFolderTests

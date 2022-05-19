@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>P3Mobility.CloudFileSystem.FileSystem</AssemblyName>
+    <AssemblyName>CloudFileSystem.FileSystem</AssemblyName>
   </PropertyGroup>
 
 </Project>

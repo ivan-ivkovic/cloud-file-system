@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 
-using P3Mobility.CloudFileSystem.FileSystemRepository.Files;
-using P3Mobility.CloudFileSystem.FileSystemRepository.Folders.Models;
+using CloudFileSystem.FileSystemRepository.Files;
+using CloudFileSystem.FileSystemRepository.Folders.Models;
 
-namespace P3Mobility.CloudFileSystem.FileSystemRepository;
+namespace CloudFileSystem.FileSystemRepository;
 
 internal class DatabaseContext : DbContext
 {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-using P3Mobility.CloudFileSystem.DependencyManagement;
+using CloudFileSystem.DependencyManagement;
 
 var builder = WebApplication.CreateBuilder(args);
 

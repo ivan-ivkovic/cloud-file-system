@@ -2,10 +2,10 @@ using System;
 
 using Microsoft.AspNetCore.Mvc;
 
-using P3Mobility.CloudFileSystem.FileSystem.Exceptions;
-using P3Mobility.CloudFileSystem.FileSystem.Files;
+using CloudFileSystem.FileSystem.Exceptions;
+using CloudFileSystem.FileSystem.Files;
 
-namespace P3Mobility.CloudFileSystem.FileSystemApi;
+namespace CloudFileSystem.FileSystemApi;
 
 [ApiController]
 [Route("[controller]")]

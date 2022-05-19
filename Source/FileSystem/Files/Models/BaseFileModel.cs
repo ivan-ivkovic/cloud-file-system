@@ -1,4 +1,4 @@
-namespace P3Mobility.CloudFileSystem.FileSystem.Files;
+namespace CloudFileSystem.FileSystem.Files;
 
 public abstract class BaseFileModel
 {

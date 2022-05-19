@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-using P3Mobility.CloudFileSystem.FileSystem.Files;
-using P3Mobility.CloudFileSystem.FileSystem.Folders;
-using P3Mobility.CloudFileSystem.FileSystemRepository;
-using P3Mobility.CloudFileSystem.FileSystemRepository.Files;
-using P3Mobility.CloudFileSystem.FileSystemRepository.Folders;
+using CloudFileSystem.FileSystem.Files;
+using CloudFileSystem.FileSystem.Folders;
+using CloudFileSystem.FileSystemRepository;
+using CloudFileSystem.FileSystemRepository.Files;
+using CloudFileSystem.FileSystemRepository.Folders;
 
-namespace P3Mobility.CloudFileSystem.DependencyManagement;
+namespace CloudFileSystem.DependencyManagement;
 
 public static class ServiceCollectionExtensions
 {

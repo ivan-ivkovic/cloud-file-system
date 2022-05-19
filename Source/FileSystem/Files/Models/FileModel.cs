@@ -1,6 +1,6 @@
 using System;
 
-namespace P3Mobility.CloudFileSystem.FileSystem.Files;
+namespace CloudFileSystem.FileSystem.Files;
 
 public class FileModel
 {

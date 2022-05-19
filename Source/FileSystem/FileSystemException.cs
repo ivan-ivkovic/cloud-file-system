@@ -1,6 +1,6 @@
 using System;
 
-namespace P3Mobility.CloudFileSystem.FileSystem.Exceptions;
+namespace CloudFileSystem.FileSystem.Exceptions;
 
 public class FileSystemException : Exception
 {

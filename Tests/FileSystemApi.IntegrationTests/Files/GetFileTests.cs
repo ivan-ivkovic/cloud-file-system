@@ -11,10 +11,10 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 using NUnit.Framework;
 
-using P3Mobility.CloudFileSystem.FileSystem.Files;
-using P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests.Helpers;
+using CloudFileSystem.FileSystem.Files;
+using CloudFileSystem.FileSystemApi.IntegrationTests.Helpers;
 
-namespace P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests.Files;
+namespace CloudFileSystem.FileSystemApi.IntegrationTests.Files;
 
 [TestFixture]
 public class GetFileTests

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-using P3Mobility.CloudFileSystem.FileSystem.Folders.Models;
+using CloudFileSystem.FileSystem.Folders.Models;
 
-namespace P3Mobility.CloudFileSystem.FileSystem.Folders;
+namespace CloudFileSystem.FileSystem.Folders;
 
 public interface IFolderRepository
 {

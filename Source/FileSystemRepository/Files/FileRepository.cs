@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using P3Mobility.CloudFileSystem.FileSystem.Files;
+using CloudFileSystem.FileSystem.Files;
 
-namespace P3Mobility.CloudFileSystem.FileSystemRepository.Files;
+namespace CloudFileSystem.FileSystemRepository.Files;
 
 internal class FileRepository : IFileRepository
 {

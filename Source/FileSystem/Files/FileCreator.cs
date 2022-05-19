@@ -1,7 +1,7 @@
-using P3Mobility.CloudFileSystem.FileSystem.Exceptions;
-using P3Mobility.CloudFileSystem.FileSystem.Folders;
+using CloudFileSystem.FileSystem.Exceptions;
+using CloudFileSystem.FileSystem.Folders;
 
-namespace P3Mobility.CloudFileSystem.FileSystem.Files;
+namespace CloudFileSystem.FileSystem.Files;
 
 public class FileCreator
 {

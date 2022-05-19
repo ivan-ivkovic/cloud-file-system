@@ -1,6 +1,6 @@
 using System;
 
-namespace P3Mobility.CloudFileSystem.FileSystemRepository.Files;
+namespace CloudFileSystem.FileSystemRepository.Files;
 
 internal class FileDatabaseModel
 {

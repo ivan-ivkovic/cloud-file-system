@@ -1,4 +1,4 @@
-namespace P3Mobility.CloudFileSystem.FileSystemApi.IntegrationTests.Helpers;
+namespace CloudFileSystem.FileSystemApi.IntegrationTests.Helpers;
 
 public class HttpErrorResponseModel
 {

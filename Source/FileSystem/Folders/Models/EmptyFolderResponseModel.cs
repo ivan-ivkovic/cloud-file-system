@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace P3Mobility.CloudFileSystem.FileSystem.Folders.Models;
+namespace CloudFileSystem.FileSystem.Folders.Models;
 
 public class EmptyFolderResponseModel : FolderResponseModel
 {

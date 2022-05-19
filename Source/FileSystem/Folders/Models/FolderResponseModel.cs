@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace P3Mobility.CloudFileSystem.FileSystem.Folders.Models;
+namespace CloudFileSystem.FileSystem.Folders.Models;
 
 public class FolderResponseModel : BaseFolderModel
 {

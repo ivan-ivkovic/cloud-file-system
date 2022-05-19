@@ -4,11 +4,11 @@ using System.Linq;
 
 using Microsoft.Extensions.Configuration;
 
-using P3Mobility.CloudFileSystem.FileSystem.Folders;
-using P3Mobility.CloudFileSystem.FileSystem.Folders.Models;
-using P3Mobility.CloudFileSystem.FileSystemRepository.Folders.Models;
+using CloudFileSystem.FileSystem.Folders;
+using CloudFileSystem.FileSystem.Folders.Models;
+using CloudFileSystem.FileSystemRepository.Folders.Models;
 
-namespace P3Mobility.CloudFileSystem.FileSystemRepository.Folders;
+namespace CloudFileSystem.FileSystemRepository.Folders;
 
 internal class FolderRepository : IFolderRepository
 {
